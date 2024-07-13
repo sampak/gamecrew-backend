@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { ISignUpRequest } from 'dto/requests/ISignUp.Request';
+import { ISignUpRequest } from '../dto/requests/ISignUp.Request';
 import { PrismaService } from 'src/prisma.service';
 import { genJWTToken } from 'src/utils/jwt';
 import * as bcrypt from 'bcrypt';
 import { config } from 'src/config';
-import { ISignInRequest } from 'dto/requests/ISignIn.Request';
+import { ISignInRequest } from '../dto/requests/ISignIn.Request';
 import { User } from '@prisma/client';
 import { prismaUserToUser } from 'src/adapters/prismaUserToUser';
 import { ERROR_CODES } from 'src/config/constants';
@@ -15,7 +15,10 @@ export class UserService {
   async signIn(payload: ISignInRequest) {
     const prismaUser = await this.prismaService.user.findFirst({
       where: {
-        email: payload.email,
+        OR: [
+          { email: payload.email },
+          { login: payload.email }
+        ]
       }, 
     })
 
