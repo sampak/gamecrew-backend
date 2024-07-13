@@ -1,0 +1,7 @@
+export const ERROR_CODES = {
+  STORAGE_NOT_AVAILABLE: 'STORAGE_NOT_AVAILABLE',
+  USER_EXIST: 'USER_EXIST',
+  NOT_FOUND: 'NOT_FOUND'
+};
+
+export const FRIDGES_STORAGE =  'fridges'

@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String         @id @default(uuid())
+  login     String
+  email     String
+  password  String
+  provider  auth_providers @default(LOGIN)
+  steamId   String?
+  avatar    String?
+  updatedAt DateTime       @updatedAt
+  createdAt DateTime       @default(now())
+  games     UsersGame[]
+
+  @@map("users")
+}
+
+model Game {
+  id        String      @id @default(uuid())
+  shortName String
+  name      String
+  image     String
+  updatedAt DateTime    @updatedAt
+  createdAt DateTime    @default(now())
+  users     UsersGame[]
+
+  @@map("games")
+}
+
+model UsersGame {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  game       Game     @relation(fields: [gameId], references: [id])
+  gameId     String
+  nickname   String
+  externalId String
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+
+  @@map("users_game")
+}
+
+enum auth_providers {
+  LOGIN
+  STEAM
+}
