@@ -1,0 +1,3 @@
+[submodule "src/dto"]
+	path = src/dto
+	url = git@github.com:sampak/gamecrew-dto.git
